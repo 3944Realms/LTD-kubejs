@@ -1,3 +1,5 @@
+let translatable = java('net.minecraft.network.chat.TranslatableComponent')
+
 //物品提示修改
 onEvent('item.tooltip', event => {
     //发情药水的药水效果提示修改
@@ -7,15 +9,42 @@ onEvent('item.tooltip', event => {
         'minecraft:lingering_potion',
         'minecraft:tipped_arrow'
     ], (item, advanced, text) => {
-        if (text.toArray()[0].siblings.toArray()[0].key.includes('oestrus_potion')) {
-            text.remove(1)
-            text.add(1, Text.blue('发情 II'))
+        if (text != null &&
+            text.get(1) != null &&
+            text.get(1).args.length != 0 &&
+            text.get(1).args[0].args.length != 0 &&
+            text.get(1).args[0].args[0].key != null &&
+            text.get(1).args[0].args[0].key.includes('unregistered_sadface') &&
+            text.get(0).siblings.toArray().length != 0 &&
+            text.get(0).siblings[0] != null &&
+            text.get(0).siblings[0].key != null
+        ) {
+            if (text.get(0).siblings[0].key.includes('oestrus_potion_strong')) {
+                text.get(1).args[0].args[0] = new translatable('发情+')
+            } else if (text.get(0).siblings[0].key.includes('oestrus_potion')) {
+                text.get(1).args[0].args[0] = new translatable('发情')
+            }
         }
-        if (text.toArray()[0].siblings.toArray()[0].key.includes('oestrus_potion_de')) {
-            text.add(2, Text.lightPurple("+ 时效延长"))
-        }
-        if (text.toArray()[0].siblings.toArray()[0].key.includes('oestrus_potion_st')) {
-            text.add(2, Text.lightPurple("+ 效果增强"))
+    })
+
+    //药水注射器提示修改
+    event.addAdvanced([
+        'thermal:potion_infuser'
+    ], (item, advanced, text) => {
+        if (text != null &&
+            text.size() > 9 &&
+            text.get(9) != null &&
+            text.get(9).args.length != 0 &&
+            text.get(9).args[0].args.length != 0 &&
+            text.get(9).args[0].args[0].key != null &&
+            text.get(9).args[0].args[0].key.includes('unregistered_sadface') &&
+            text.get(5).key != null
+        ) {
+            if (text.get(5).key.includes('oestrus_potion_strong')) {
+                text.get(9).args[0].args[0] = new translatable('发情+')
+            } else if (text.get(5).key.includes('oestrus_potion')) {
+                text.get(9).args[0].args[0] = new translatable('发情')
+            }
         }
     })
 

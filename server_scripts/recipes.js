@@ -9,7 +9,7 @@ onEvent('recipes', event => {
     event.recipes.minecraft.blasting('minecraft:quartz', '#forge:glass')
 
     //指挥棒
-    event.recipes.minecraft.stonecutting('ywzj_midi:baton_item', 'minecraft:stick')
+    // event.recipes.minecraft.stonecutting('ywzj_midi:baton_item', 'minecraft:stick')
 
     //提琴弓系列
     event.recipes.minecraft.stonecutting('ywzj_midi:double_bass_bow_item', 'ywzj_midi:felt_mallet_item')

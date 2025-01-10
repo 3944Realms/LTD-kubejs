@@ -69,12 +69,13 @@ const eatAwardList = [
     { id: 'minecraft:iron_ingot', number: 36, weight: 100 },
     { id: 'oestrus:c9h11no', number: 4, weight: 50 },
     { id: 'kitchenkarrot:ultra_super_delicious_cereal_porridge', number: 1, weight: 25 },
-    { item: Item.of('kitchenkarrot:cocktail', 2, '{cocktail:"kitchenkarrot:cocktails/nebula_chronicles"}'), weight: 50 },
+    { id: 'gobber2:gobber2_glob_nether', number: 16, weight: 50 },
     { id: 'minecraft:rabbit_foot', number: 8, weight: 50 },
     { id: 'oestrus:aurora_crescent', number: 1, weight: 1 },
     { id: 'shulker_shell', number: 16, weight: 6 },
-    { id: 'minecraft:name_tag', number: 2, weight: 250 },
-    { id: 'gobber2:gobber2_glob_end', number: 16, weight: 50 }
+    { id: 'minecraft:name_tag', number: 2, weight: 200 },
+    { id: 'gobber2:gobber2_glob_end', number: 16, weight: 50 },
+    { id: 'gobber2:gobber2_glob', number: 16, weight: 50 }
 ]
 
 //可以激活的矿机
