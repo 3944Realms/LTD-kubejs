@@ -6,11 +6,14 @@ onEvent("mob_effect.registry", event => {
         .displayName('发情')
         .beneficial()
         .effectTick((entity, lvl) => {
-            //动物繁殖
-            if (entity.getFullNBT().get('Age') == 0 && entity.getFullNBT().get('InLove') == 0) {
-                let tags = entity.getFullNBT()
-                tags.put("InLove", 60)
-                entity.setFullNBT(tags)
+            if (entity.isAnimal()) {
+                /**
+                 * @type {Internal.Animal}
+                 */
+                let animal = entity.minecraftLivingEntity;
+                if (animal.inLove != undefined && !animal.inLove) {
+                    animal.inLoveTime = 120
+                }
             }
             return
         })
@@ -22,11 +25,14 @@ onEvent("mob_effect.registry", event => {
         .displayName('发情+')
         .beneficial()
         .effectTick((entity, lvl) => {
-            //动物繁殖
-            if (entity.getFullNBT().get('Age') == 0 && entity.getFullNBT().get('InLove') == 0) {
-                let tags = entity.getFullNBT()
-                tags.put("InLove", 120)
-                entity.setFullNBT(tags)
+            if (entity.isAnimal()) {
+                /**
+                 * @type {Internal.Animal}
+                 */
+                let animal = entity.minecraftLivingEntity;
+                if (animal.inLove != undefined && !animal.inLove) {
+                    animal.inLoveTime = 120
+                }
             }
             return
         })

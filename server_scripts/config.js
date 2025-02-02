@@ -12,14 +12,6 @@ let itemStack = java('dev.latvian.mods.kubejs.item.ItemStackJS')
 let compoundTag = java('net.minecraft.nbt.CompoundTag')
 let effectIns = java('net.minecraft.world.effect.MobEffectInstance')
 
-//冒爱心计时
-let heartClock = 0;
-//捆绑进度条计时
-let tyingClock = 0;
-//药池buff计时
-let poolsClock = 0;
-
-
 //计时（默认tick）
 //捆绑进度条时钟配置
 const tyingClockConfig = 20;

@@ -17,7 +17,10 @@ onEvent('player.logged_in', event => {
 
 //右键矿机提示可使用矿物
 onEvent('block.right_click', event => {
-    if (event.block.id == 'oregen:ore_machine') {
+    event.block.getPlayersInRadius()
+    if (event.block.id == 'oregen:ore_machine' &&
+        event.player.mainHandItem.isEmpty()
+    ) {
         let tips = `能被生成的矿物：`
         for (let i = 0; i < global.canCopyBlock.length; i++) {
             tips += `\n${global.canCopyBlock[i]}`

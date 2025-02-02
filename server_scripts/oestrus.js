@@ -31,7 +31,6 @@ onEvent('player.tick', event => {
             if (values.includes('effect.unregistered_sadface')) {
                 let duration = effect.duration
                 let amplifier = effect.amplifier
-                console.log(duration);
 
                 if (keyset == global.oestrusPlusEffect) {
                     player.potionEffects.add('oestrus:oestrus_plus', duration, amplifier)
@@ -77,20 +76,25 @@ onEvent('player.tick', event => {
 
         //冒爱心
         let heartNum = lvl * 5 > 20 ? 20 : lvl * 5; //爱心数量每级+5，不超过20
-        if (heartClock <= 0) {
+        /**
+         * @type {Internal.Player}
+         */
+        let serverPlayer = player.minecraftPlayer;
+
+        if (serverPlayer.tickCount % heartClockConfig == 0) {
             //用指令生成爱心
             if (lvl == 1) {
                 for (let i = 0; i < heartNum; i++) {
                     event.server.runCommandSilent(`execute at ${playerId} run particle minecraft:heart ~${Math.random()*1.5-0.75} ~${Math.random()*0.5+1.3} ~${Math.random()*1.5-0.75}`)
                 }
             }
-        } else if (heartClock % 50 == 0) {
+        } else if (serverPlayer.tickCount % (heartClockConfig / 2) == 0) {
             if (lvl == 2) {
                 for (let i = 0; i < heartNum; i++) {
                     event.server.runCommandSilent(`execute at ${playerId} run particle minecraft:heart ~${Math.random()*1.5-0.75} ~${Math.random()*0.5+1.3} ~${Math.random()*1.5-0.75}`)
                 }
             }
-        } else if (heartClock % 20 == 0) {
+        } else if (serverPlayer.tickCount & (heartClockConfig / 5) == 0) {
             if (lvl >= 3) {
                 for (let i = 0; i < heartNum; i++) {
                     event.server.runCommandSilent(`execute at ${playerId} run particle minecraft:heart ~${Math.random()*1.5-0.75} ~${Math.random()*0.5+1.3} ~${Math.random()*1.5-0.75}`)
@@ -99,7 +103,7 @@ onEvent('player.tick', event => {
         }
 
         //加捆绑速度
-        if (tyingClock <= 0) {
+        if (serverPlayer.tickCount % tyingClockConfig == 0) {
             //如果有效果而且没有捆绑条
             let effect = oestrusValues.getEffect()
             if (effect.registryName.toString().includes('oestrus')) {
@@ -165,18 +169,8 @@ onEvent('player.tick', event => {
 
 //每tick执行一次，服务器tick
 onEvent('server.tick', event => {
-    heartClock--
-    if (heartClock < 0) {
-        heartClock = heartClockConfig
-    }
-    tyingClock--
-    if (tyingClock < 0) {
-        tyingClock = tyingClockConfig
-    }
-
     //媚药池
-    poolsClock--;
-    if (poolsClock <= 0) {
+    if (event.server.minecraftServer.tickCount % poolsClockConfig == 0) {
         for (let entity of event.server.entities) {
             //if 是玩家或者动物
             if (entity.isPlayer() || entity.getFullNBT() != null && entity.getFullNBT().get('InLove') != null && entity.isAlive()) {
@@ -229,11 +223,20 @@ onEvent('item.entity_interact', event => {
 
             //if 手持注射器
             if (mainHandItem.id == 'thermal:potion_infuser') {
-                let potion = mainHandItem.nbt.get('Fluid').get('Tag').get('Potion')
-                let properties = mainHandItem.nbt.get('Properties')
+                let potion = null
+                let properties = null
+                if (mainHandItem.nbt != null &&
+                    mainHandItem.nbt.get('Fluid') != null &&
+                    mainHandItem.nbt.get('Fluid').get('Tag') != null &&
+                    mainHandItem.nbt.get('Fluid').get('Tag').get('Potion') != null &&
+                    mainHandItem.nbt.get('Properties') != null
+                ) {
+                    potion = mainHandItem.nbt.get('Fluid').get('Tag').get('Potion')
+                    properties = mainHandItem.nbt.get('Properties')
+                }
 
                 //是否装了炼金放大组件
-                if (properties.getFloat('PotionAmp') != 0 && potion.toString().includes('oestrus')) {
+                if (potion != null && properties != null && properties.getFloat('PotionAmp') != 0 && potion.toString().includes('oestrus')) {
                     player.setStatusMessage(Text.red('炼金放大组件无法作用于发情效果'))
                     event.cancel()
                 }
