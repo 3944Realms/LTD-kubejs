@@ -17,7 +17,6 @@ onEvent('player.logged_in', event => {
 
 //右键矿机提示可使用矿物
 onEvent('block.right_click', event => {
-    event.block.getPlayersInRadius()
     if (event.block.id == 'oregen:ore_machine' &&
         event.player.mainHandItem.isEmpty()
     ) {
